@@ -1,8 +1,9 @@
-# A Detailed Guide on How to Create a Smart Contract for Flowers on the Celo Blockchain.
+# A Detailed Guide on How to Create a Smart Contract for a Flowers Marketplace on the Celo Blockchain
 
 ## INTRODUCTION
 
 **What is Celo?**<br>
+
 
 <img   src="https://coinculture.com/au/wp-content/uploads/2022/07/Celo.jpg" alt="celo img"/>
 
@@ -12,23 +13,24 @@
 
 To take this tutorial, you will need:
 - A desktop computer with internet and a Chrome web browser.
-- A basic understanding of Blockchain technology and smart contracts. If you're not familiar with this, we suggest taking our Introduction to Blockchain course first.
+- A basic understanding of blockchain technology and smart contracts. If you're not familiar with this, we suggest taking our Introduction to Blockchain course first.
 - A desktop computer with internet and a Chrome web browser.
 
 ## REQUIREMENT
-- A code or text editor. This tutorial uses Remix IDE.
+- A code or text editor. This tutorial uses the [Remix IDE](https://remix.ethereum.org/).
 - An internet browser and stable internet connection.
 
 ## Tutorial Overview
 
-In this tutorial, we would be building a smart contract for buying and selling flowers on the celo blockchain. The contract contains a set of rules and conditions that must be met before the transaction can take place. The conditions include the price of the flowers and any other relevant terms. Once the conditions are met, the contract automatically executes the transaction, transferring ownership of the flowers and the payment between the buyer and the seller in a secure, transparent, and tamper-proof manner. This eliminates the need for intermediaries and ensures that the transaction is fair, efficient, and reliable.<br>
+In this tutorial, we would be building a smart contract for buying and selling flowers on the Celo blockchain. The contract contains a set of rules and conditions that must be met before the transaction can take place. The conditions include the price of the flowers and any other relevant terms. Once the conditions are met, the contract automatically executes the transaction, transferring ownership of the flowers and the payment between the buyer and the seller in a secure, transparent, and tamper-proof manner. This eliminates the need for intermediaries and ensures that the transaction is fair, efficient, and reliable.<br>
 
 Now let's begin writing our smart contract.
 
 To get started, we will create a new file on remix called flower.sol. Click on this link to learn how to create a new file on remix [(here)](https://remix-ide.readthedocs.io/en/latest/file_explorer.html#:~:text=Creating%20new%20files,-There%20are%202&text=The%20first%20is%20to%20click,will%20open%20in%20the%20Editor.).
 
 After creating a new file we start by declaring some statements in our smart contract.
-```js
+
+```solidity
 // SPDX-License-Identifier: MIT
 
 pragma solidity >=0.7.0 <0.9.0;
@@ -38,7 +40,7 @@ The line SPDX-License-Identifier: MIT is an identifier for the license of the co
 The next line is the declaration of the solidity programming language used in a smart contract, specifically stating that the code is written in Solidity version 0.7.0 or later, but not later than 0.9.0. 
 
 Next, we add our token interface.
-```js
+```solidity
 interface IERC20Token {
   function transfer(address, uint256) external returns (bool);
   function approve(address, uint256) external returns (bool);
@@ -64,7 +66,7 @@ The **IERC20Token** is an interface in the Ethereum network that defines the sta
 Next, we begin by naming our contract and also creating our struct.<br>
 A `struct` in Solidity is a user-defined complex data type that allows you to group multiple variables under a single name. It is used to define a custom type in the contract and can be used to store multiple values of different types under a single object. A struct can contain elements of different data types including other structs, arrays, and mappings.
 
-```js
+```solidity
 contract FloralNft{
     struct Flower{
         address payable owner;
@@ -86,11 +88,12 @@ The next line is the struct called `Flower` which holds information about a uniq
 - `forSale`: a boolean value that indicates whether the flower is for sale or not.<br>
 
 Additionally, to interact with the cUSD token on the Celo alfajores test network, it is necessary to include the address of the token.
-```js
+
+```solidity
  address internal cUsdTokenAddress = 0x874069Fa1Eb16D44d622F2e0Ca25eeA172369bC1;
 ```
 Next, we create our mapping. Click on this link to know more about mapping [(Mapping)](https://medium.com/upstate-interactive/mappings-in-solidity-explained-in-under-two-minutes-ecba88aff96e).
-```js
+```solidity
 mapping (uint => Flower) internal flowers;
     uint internal flowersLength = 0; 
 ```
@@ -99,7 +102,8 @@ The mapping, named "flowers", maps a key of type "uint" (unsigned integer) to a 
 A state variable named `flowersLength` is being declared in the next line as a data type of "uint". This variable will store the number of flowers permanently in the contract and only accept unsigned integer values.<br>
 
 Furthermore, to make our smart contract more interesting we begin to add functions. The first function we will be adding is the create flower function.
-```js
+
+```solidity
 
     function createFlower(
         string memory _name,
@@ -122,7 +126,7 @@ Furthermore, to make our smart contract more interesting we begin to add functio
 The createFlower function creates a new flower and stores it in a mapping named "flowers" where "flowersLength" keeps track of the number of flowers stored. The function takes 5 arguments: _name (the name of the flower), _description (a description of the flower), _image (a URL or reference to the image of the flower), _price (the price of the flower), and _isSale (a boolean indicating if the flower is on sale). The "payable" keyword ensures that the sender of the transaction can pay for the gas required to execute the function. <br>
 
 The next inline is the `getFlower` function.
-```js
+```solidity
   function getFlower(uint _index) public view returns(
         address payable,
         string memory,
@@ -146,8 +150,9 @@ The next inline is the `getFlower` function.
 The getFlower function helps retrieves information about a flower stored in the "flowers" mapping based on its index. The function has one input argument, _index, which is the index of the desired flower in the mapping. The function is marked with the view and public keywords, meaning that it can be executed by any user and does not modify the state of the contract. The function returns the owner's address, name, description, image, price, and sale status of the flower.<br>
 
 Next, we add a buy function that will enable users to purchase flowers from the blockchain.
-```js
-function buyFlower(uint _index)public payable{
+```solidity
+    function buyFlower(uint _index)public payable{
+        require(flowers[_index].forSale, "Flower is not for sale");
         require(
             IERC20Token(cUsdTokenAddress).transferFrom(
                 msg.sender,
@@ -163,12 +168,13 @@ function buyFlower(uint _index)public payable{
 
 The buy function allows a user to purchase a flower that is stored in a mapping called "flowers." The input argument, _index, determines which flower the user wants to buy. The function is marked as payable and public, meaning it can be executed by any user and requires payment in Ether.
 
-The function first checks if the required amount can be transferred from the buyer's account to the seller's account using the transferFrom function of an IERC20 token contract at a specified address. If the transfer fails, an error message "Transaction can not be performed" is thrown. If the transfer succeeds, the flower's forSale status is set to false and the ownership is transferred to the buyer.
+The function first checks if the flower is for sale and then checks if the required amount has been successfully transferred from the buyer's account to the seller's account using the transferFrom function of an IERC20 token contract at a specified address. If the transfer fails, an error message "Transaction can not be performed" is thrown. If the transfer succeeds, the flower's forSale status is set to false and the ownership is transferred to the buyer.
 
 Furthermore, we add a unique function which is the `setForsale` function.
 
-```js
- function setForSale(uint _index)public{
+```solidity
+    function setForSale(uint _index)public{
+        require(flowers[_index].owner == msg.sender, "Only the flower's owner can perform this action");
         flowers[_index].forSale = !flowers[_index].forSale;
     }
 ```
@@ -179,11 +185,11 @@ It works by changing the status of a flower to either "for sale" or "not for sal
 
 The function takes one input, which is the index of the flower that needs to be changed.
 
-Then, the function updates the "forSale" property of the flower at that index to the opposite of its current value. For example, if the "forSale" property was "true", it will now become "false", and if it was "false", it will now become "true".
+Then, the function checks if the sender of the transaction is the flower's owner and if true, it then updates the "forSale" property of the flower at that index to the opposite of its current value. For example, if the "forSale" property was "true", it will now become "false", and if it was "false", it will now become "true".
 
 Finally, we add the `getFlowersLegth` function that will help users know how many flowers are currently in the array, without having to look through the entire array themselves. It provides a quick and easy way to retrieve this information.
 
-```js
+```solidity
  function getFlowerLength() public view returns (uint) {
         return (flowersLength);
     }
@@ -197,7 +203,7 @@ When the function is called, it simply returns the value of a variable called "f
 
 The complete code for this session is provided below.
 
-```js
+```solidity
 // SPDX-License-Identifier: MIT
 
 pragma solidity >=0.7.0 <0.9.0;
@@ -266,6 +272,7 @@ contract FloralNft{
     }
     
     function buyFlower(uint _index)public payable{
+        require(flowers[_index].forSale, "Flower is not for sale");
         require(
             IERC20Token(cUsdTokenAddress).transferFrom(
                 msg.sender,
@@ -279,9 +286,11 @@ contract FloralNft{
     }
     
     function giftFlower(uint _index, address _address)public{
+        require(flowers[_index].owner == msg.sender, "Only the flower's owner can perform this action");
         flowers[_index].owner = payable(_address);
     }
     function setForSale(uint _index)public{
+        require(flowers[_index].owner == msg.sender, "Only the flower's owner can perform this action");
         flowers[_index].forSale = !flowers[_index].forSale;
     }
     
