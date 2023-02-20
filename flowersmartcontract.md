@@ -197,6 +197,23 @@ The function takes one parameter `_index` which is the index of the flower that 
 
 Then, the function checks if the sender of the transaction is the flower's owner, and if true, it then updates the "forSale" property of the flower at that index to the opposite of its current value. For example, if the "forSale" property was "true", it would now become "false", and if it was "false", it would now become "true".
 
+Next, we add the `giftFlower` function.
+
+```solidity
+    function giftFlower(uint _index, address _address)public{
+        require(flowers[_index].owner == msg.sender, "Only the flower's owner can perform this action");
+        flowers[_index].owner = payable(_address);
+        flowers[_index].forSale = false;
+    }
+```
+
+The `giftFlower` function allows a user to gift a flower they own to another user. The function takes two parameters:
+
+1. `_index` - The index of the flower in the `flowers` mapping 
+2. `_address` - The user's address to gift the flower to
+
+It then checks if the sender of the transaction is the `owner` of the flower, if true, it updates the `owner` of the flower to the `_address` and changes the `forSale` value to `false` as the new `owner` might not want to sell the flower.  
+
 Finally, we add the `getFlowersLegth` function that will help users know how many flowers are currently in our smart contract's state, without having to look through the entire `flowers` mapping. It provides a quick and easy way to retrieve this information.
 
 ```solidity
@@ -295,6 +312,7 @@ contract FloralNft{
     function giftFlower(uint _index, address _address)public{
         require(flowers[_index].owner == msg.sender, "Only the flower's owner can perform this action");
         flowers[_index].owner = payable(_address);
+        flowers[_index].forSale = false;
     }
     function setForSale(uint _index)public{
         require(flowers[_index].owner == msg.sender, "Only the flower's owner can perform this action");
