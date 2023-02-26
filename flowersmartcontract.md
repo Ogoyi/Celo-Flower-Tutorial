@@ -335,13 +335,13 @@ Celo Faucet: Fund your wallet by copying your wallet address and pasting it into
 
 Celo Remix Plugin: Open Remix and create a new Solidity file, paste the ShoeAuction contract code into the file, and ensure the Solidity compiler is set to version 0.8.7 or later.
 
-Compile the contract by clicking the "Compile ShoeAuction.sol" button in the Solidity Compiler tab in Remix.
+Compile the contract by clicking the "Compile FloralNft.sol" button in the Solidity Compiler tab in Remix.
 
-In the "Deploy & Run Transactions" tab, select the Celo network from the dropdown menu, connect your wallet to Remix by clicking "Connect to wallet", and select "ShoeAuction" from the "Contract" dropdown menu.
+In the "Deploy & Run Transactions" tab, select the Celo network from the dropdown menu, connect your wallet to Remix by clicking "Connect to wallet", and select "FloralNft" from the "Contract" dropdown menu.
 
 Click the "Deploy" button, confirm the transaction in your wallet, and wait for the transaction to be confirmed on the Celo blockchain.
 
-Once the transaction is confirmed, the ShoeAuction contract will be deployed on the Celo blockchain and you can interact with it using Remix.
+Once the transaction is confirmed, the FloralNft contract will be deployed on the Celo blockchain and you can interact with it using Remix.
 
 ## CONCLUSION
 
