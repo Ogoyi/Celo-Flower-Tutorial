@@ -333,7 +333,7 @@ CeloExtensionWallet: Download and install the Celo Extension Wallet from the Goo
 
 Celo Faucet: Fund your wallet by copying your wallet address and pasting it into the Celo Faucet, then confirm.
 
-Celo Remix Plugin: Open Remix and create a new Solidity file, paste the ShoeAuction contract code into the file, and ensure the Solidity compiler is set to version 0.8.7 or later.
+Celo Remix Plugin: Open Remix and create a new Solidity file, paste the FloraNft contract code into the file, and ensure the Solidity compiler is set to version 0.8.7 or later.
 
 Compile the contract by clicking the "Compile FloralNft.sol" button in the Solidity Compiler tab in Remix.
 
