@@ -327,7 +327,7 @@ contract FloralNft{
 
 ## CONTRACT DEPLOYMENT
 
- To deploy the flower contract on the Celo blockchain, you would need the following:
+ To deploy the flower smart contract on the Celo blockchain, you would need the following:
 
 CeloExtensionWallet: Download and install the Celo Extension Wallet from the Google Chrome store, create a wallet, and securely store your key phrase.
 
